@@ -15,11 +15,14 @@ license:
   default: GPL3
   type: str
   choices:
-    GPL version 2: GPL2
-    GPL version 3: GPL3
+    GPL v2.0 or later: GPL2
+    GPL v3.0 or later: GPL3
     Other:
       value: Other
       validator: "QGIS Plugins must be licensed under the terms of GPL2 or GPL3 licenses."
+
+copyright_holder:
+  help: Name of the copyright holder. Probably your employer or if this is a private project or work is done as volunteer then yourself.
 
 ide_settings:
   help: Which IDE settings to include
