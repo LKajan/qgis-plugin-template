@@ -37,6 +37,7 @@ def copier_defaults() -> dict[str, Any]:
         "ide_settings": "none",
         "include_processing": False,
         "copyright_holder": "Gispo Ltd.",
+        "linting": "minimal",
     }
 
 
@@ -44,6 +45,7 @@ SUPPORTED_COMBINATIONS = [
     {},  # test with default values
     {"license": "GPL3"},
     {"include_processing": True},
+    {"linting": "hatch"},
 ]
 
 
@@ -104,11 +106,15 @@ class TestNoOptInFeatures:
         plugin_path = tmp_path_factory.mktemp("plugin")
         context_override = {
             "ide_settings": "none",
+            "linting": "minimal",
         }
         return session_copier.copy(dst=plugin_path, **context_override)
 
     def test_no_vscode_settings(self, copied_project: CopierProject):
         assert not (copied_project.path / ".vscode" / "settings.json").exists()
+
+    def test_ruff_defaults(self, copied_project: CopierProject):
+        assert not (copied_project.path / "ruff_defaults.toml").exists()
 
 
 class TestOptInFeatures:
@@ -121,8 +127,12 @@ class TestOptInFeatures:
         plugin_path = tmp_path_factory.mktemp("plugin")
         context_override = {
             "ide_settings": "vscode",
+            "linting": "hatch",
         }
         return session_copier.copy(dst=plugin_path, **context_override)
 
     def test_vscode_settings(self, copied_project: CopierProject):
         assert (copied_project.path / ".vscode" / "settings.json").exists()
+
+    def test_ruff_defaults(self, copied_project: CopierProject):
+        assert (copied_project.path / "ruff_defaults.toml").exists()

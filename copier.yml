@@ -29,8 +29,15 @@ license:
 copyright_holder:
   help: Name of the copyright holder. Probably your employer or if this is a private project or work is done as volunteer then yourself.
 
+linting:
+  help: Which linting tools to include
+  default: pre-commit
+  choices:
+    Use curated linting and formatting rules from Hatch project (recommended): hatch
+    Use minimal set of linting rules: minimal
+
 ide_settings:
-  help: Which IDE settings to include
+  help: How do you want to lint(format) your code?
   default: vscode
   choices:
     Visual Studio Code: vscode
