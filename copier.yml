@@ -20,3 +20,10 @@ license:
     Other:
       value: Other
       validator: "QGIS Plugins must be licensed under the terms of GPL2 or GPL3 licenses."
+
+ide_settings:
+  help: Which IDE settings to include
+  default: vscode
+  choices:
+    Visual Studio Code: vscode
+    None: none

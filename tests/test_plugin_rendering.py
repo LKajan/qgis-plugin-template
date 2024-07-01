@@ -31,6 +31,7 @@ def copier_defaults() -> dict[str, Any]:
         "plugin_name": "My QGIS plugin",
         "plugin_package": "plugin",
         "license": "GPL2",
+        "ide_settings": "none",
     }
 
 
@@ -85,3 +86,12 @@ def test_ruff_formatting_passes(copied_project: CopierProject):
     """Generated project should pass ruff formatting."""
 
     run_cli_command([sys.executable, "-m", "ruff", "format", "--check", "."], cwd=str(copied_project.path))
+
+
+def test_no_vscode_settings(copied_project: CopierProject):
+    assert not (copied_project.path / ".vscode" / "settings.json").exists()
+
+
+def test_vscode_settings(copier: CopierFixture, tmp_path: Path):
+    project = copier.copy(tmp_path, ide_settings="vscode")
+    assert (project.path / ".vscode" / "settings.json").exists()
