@@ -1,0 +1,22 @@
+_min_copier_version: "9"
+_subdirectory: plugin_template
+_templates_suffix: .jinja
+
+plugin_name:
+  help: Choose a name for your plugin
+  default: My QGIS plugin
+
+plugin_package:
+  help: Choose a name for the Python package. It should be a valid Python package name (no spaces etc.).
+  default: "{{ plugin_name|lower|replace(' ', '_') }}"
+
+license:
+  help: Choose a license for your plugin
+  default: GPL3
+  type: str
+  choices:
+    GPL version 2: GPL2
+    GPL version 3: GPL3
+    Other:
+      value: Other
+      validator: "QGIS Plugins must be licensed under the terms of GPL2 or GPL3 licenses."
