@@ -10,6 +10,11 @@ plugin_package:
   help: Choose a name for the Python package. It should be a valid Python package name (no spaces etc.).
   default: "{{ plugin_name|lower|replace(' ', '_') }}"
 
+include_processing:
+  help: Include a Processing provider
+  default: no
+  type: bool
+
 license:
   help: Choose a license for your plugin
   default: GPL3
