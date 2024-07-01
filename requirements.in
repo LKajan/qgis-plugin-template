@@ -1,0 +1,11 @@
+
+# Testing
+copier
+pytest
+pytest-copier
+
+# Code quality
+ruff
+pre-commit
+
+pip-tools
