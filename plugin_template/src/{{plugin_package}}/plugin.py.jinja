@@ -4,11 +4,17 @@ from __future__ import annotations
 
 from typing import Callable
 
+{% if include_processing -%}
+from qgis.core import QgsApplication
+{% endif -%}
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QWidget
 from qgis.utils import iface
 
 from {{plugin_package}}.gui.sample_dialog import SampleDialog
+{%- if include_processing %}
+from {{plugin_package}}.processing.provider import Provider
+{%- endif %}
 
 
 class Plugin:
@@ -86,6 +92,12 @@ class Plugin:
 
         return action
 
+    {% if include_processing -%}
+    def initProcessing(self):  # noqa N802
+        self.provider = Provider()
+        QgsApplication.processingRegistry().addProvider(self.provider)
+
+    {% endif -%}
     def initGui(self) -> None:  # noqa N802
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         self._add_action(
@@ -95,6 +107,9 @@ class Plugin:
             parent=iface.mainWindow(),
             add_to_toolbar=False,
         )
+{%- if include_processing %}
+        self.initProcessing()
+{%- endif %}
 
     def onClosePlugin(self) -> None:  # noqa N802
         """Cleanup necessary items here when plugin dockwidget is closed"""
@@ -104,6 +119,10 @@ class Plugin:
         for action in self.actions:
             iface.removePluginMenu(Plugin.name, action)
             iface.removeToolBarIcon(action)
+{%- if include_processing %}
+
+        QgsApplication.processingRegistry().removeProvider(self.provider)
+{%- endif %}
 
     def run(self) -> None:
         """Run method that performs all the real work"""

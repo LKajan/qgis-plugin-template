@@ -35,6 +35,7 @@ def copier_defaults() -> dict[str, Any]:
         "plugin_package": "plugin",
         "license": "GPL2",
         "ide_settings": "none",
+        "include_processing": False,
         "copyright_holder": "Gispo Ltd.",
     }
 
@@ -42,6 +43,7 @@ def copier_defaults() -> dict[str, Any]:
 SUPPORTED_COMBINATIONS = [
     {},  # test with default values
     {"license": "GPL3"},
+    {"include_processing": True},
 ]
 
 
