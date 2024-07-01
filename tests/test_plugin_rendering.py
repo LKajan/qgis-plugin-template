@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import copy
+import sys
 from typing import TYPE_CHECKING
 
 import pytest
 from pytest_copier import CopierFixture
+
+from tests.test_utils import run_cli_command
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -70,3 +73,15 @@ def copied_project(
 def test_rendered_project(copied_project: CopierProject):
     assert copied_project.path.is_dir()
     assert (copied_project.path / "src" / copied_project.answers["plugin_package"]).exists()
+
+
+def test_ruff_linting_passes(copied_project: CopierProject):
+    """Generated project should pass ruff check."""
+
+    run_cli_command([sys.executable, "-m", "ruff", "check", "."], cwd=str(copied_project.path))
+
+
+def test_ruff_formatting_passes(copied_project: CopierProject):
+    """Generated project should pass ruff formatting."""
+
+    run_cli_command([sys.executable, "-m", "ruff", "format", "--check", "."], cwd=str(copied_project.path))
