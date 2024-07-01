@@ -1,10 +1,12 @@
-from typing import TYPE_CHECKING
+from __future__ import annotations
 
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from qgis.gui import QgisInterface
 
-def classFactory(iface: "QgisInterface"):  # noqa N802
+
+def classFactory(iface: QgisInterface):  # noqa: ARG001, N802
     from {{plugin_package}}.plugin import Plugin
 
     return Plugin()

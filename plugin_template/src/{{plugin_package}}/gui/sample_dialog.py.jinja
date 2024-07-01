@@ -6,20 +6,18 @@ from typing import TYPE_CHECKING
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog
 
-
 if TYPE_CHECKING:
-    from qgis.PyQt.QtWidgets import QLabel, QDialogButtonBox
+    from qgis.PyQt.QtWidgets import QDialogButtonBox, QLabel
 
 
-FORM_CLASS, _ = uic.loadUiType(
-    Path(__file__).parent / "sample_dialog.ui"
-)
+FORM_CLASS, _ = uic.loadUiType(Path(__file__).parent / "sample_dialog.ui")
+
 
 class SampleDialog(FORM_CLASS, QDialog):
     """Settings form embedded into QGIS 'options' menu."""
 
     label_sample: QLabel
-    buttonBox: QDialogButtonBox
+    buttonBox: QDialogButtonBox  # noqa: N815
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -29,4 +27,3 @@ class SampleDialog(FORM_CLASS, QDialog):
         self.buttonBox.rejected.connect(self.reject)
 
         self.label_sample.setText("This is a sample dialog for your {{ plugin_name }}")
-
