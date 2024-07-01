@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Gispo Ltd.
+# SPDX-License-Identifier: MIT
+
 from __future__ import annotations
 
 import copy
@@ -32,6 +35,7 @@ def copier_defaults() -> dict[str, Any]:
         "plugin_package": "plugin",
         "license": "GPL2",
         "ide_settings": "none",
+        "copyright_holder": "Gispo Ltd.",
     }
 
 
@@ -88,10 +92,35 @@ def test_ruff_formatting_passes(copied_project: CopierProject):
     run_cli_command([sys.executable, "-m", "ruff", "format", "--check", "."], cwd=str(copied_project.path))
 
 
-def test_no_vscode_settings(copied_project: CopierProject):
-    assert not (copied_project.path / ".vscode" / "settings.json").exists()
+class TestNoOptInFeatures:
+    @pytest.fixture(scope="class")
+    def copied_project(
+        self,
+        session_copier: CopierFixture,
+        tmp_path_factory: pytest.TempPathFactory,
+    ) -> CopierProject:
+        plugin_path = tmp_path_factory.mktemp("plugin")
+        context_override = {
+            "ide_settings": "none",
+        }
+        return session_copier.copy(dst=plugin_path, **context_override)
+
+    def test_no_vscode_settings(self, copied_project: CopierProject):
+        assert not (copied_project.path / ".vscode" / "settings.json").exists()
 
 
-def test_vscode_settings(copier: CopierFixture, tmp_path: Path):
-    project = copier.copy(tmp_path, ide_settings="vscode")
-    assert (project.path / ".vscode" / "settings.json").exists()
+class TestOptInFeatures:
+    @pytest.fixture(scope="class")
+    def copied_project(
+        self,
+        session_copier: CopierFixture,
+        tmp_path_factory: pytest.TempPathFactory,
+    ) -> CopierProject:
+        plugin_path = tmp_path_factory.mktemp("plugin")
+        context_override = {
+            "ide_settings": "vscode",
+        }
+        return session_copier.copy(dst=plugin_path, **context_override)
+
+    def test_vscode_settings(self, copied_project: CopierProject):
+        assert (copied_project.path / ".vscode" / "settings.json").exists()
