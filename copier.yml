@@ -4,7 +4,8 @@ _templates_suffix: .jinja
 
 plugin_name:
   help: Choose a name for your plugin
-  default: My QGIS plugin
+  placeholder: My QGIS plugin
+  validator: "{% if not plugin_name %}Please give a name to your plugin.{% endif %}"
 
 plugin_package:
   help: Choose a name for the Python package. It should be a valid Python package name (no spaces etc.).
@@ -28,6 +29,8 @@ license:
 
 copyright_holder:
   help: Name of the copyright holder. Probably your employer or if this is a private project or work is done as volunteer then yourself.
+  placeholder: Acme Corporation
+  validator: "{% if not copyright_holder %}Please specify the copyright holder.{% endif %}"
 
 linting:
   help: Which linting tools to include
