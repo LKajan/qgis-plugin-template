@@ -143,4 +143,4 @@ class TestOptInFeatures:
         assert (copied_project.path / "ruff_defaults.toml").exists()
 
     def test_git_url_has_subgroup(self, copied_project: CopierProject):
-        assert copied_project.context["git_url"] == "https://gitlab.com/org/subgroup/my-qgis-plugin"
+        assert copied_project.answers["git_url"] == "https://gitlab.com/org/subgroup/my-qgis-plugin"
