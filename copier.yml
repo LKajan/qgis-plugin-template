@@ -39,6 +39,32 @@ linting:
     Use curated linting and formatting rules from Hatch project (recommended): hatch
     Use minimal set of linting rules: minimal
 
+git_platform:
+  help: Choose the git platform where your plugin will be hosted
+  default: GitHub
+  choices:
+    GitHub: github
+    GitLab: gitlab
+
+git_organization:
+  help: Name of the organization or user on the chosen platform
+  placeholder: MyOrganization
+  validator: "{% if not git_organization %}Please give the organization which hosts the plugin.{% endif %}"
+
+git_subgroup:
+  help: Name of the subgroup in the organization (Optional)
+  when: "{{ git_platform == 'gitlab' }}"
+
+git_repo:
+  help: Name of the repository
+  # TODO: should be the destination directory by default. Follow the issue https://github.com/copier-org/copier/issues/1050
+  default: "{{ plugin_name|lower|replace(' ', '-') }}"
+  validator: "{% if not git_repo %}Please give a name to the repository.{% endif %}"
+
+git_url:
+  help: URL of the repository on the chosen platform
+  default: "https://{{ git_platform }}.com/{{ git_organization }}/{% if git_subgroup %}{{ git_subgroup }}/{% endif %}{{ git_repo }}"
+
 ide_settings:
   help: How do you want to lint(format) your code?
   default: vscode
