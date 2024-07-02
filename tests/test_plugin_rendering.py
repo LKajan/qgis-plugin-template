@@ -33,6 +33,9 @@ def copier_defaults() -> dict[str, Any]:
     return {
         "plugin_name": "My QGIS plugin",
         "plugin_package": "plugin",
+        "git_platform": "github",
+        "git_organization": "org",
+        "git_repo": "my-qgis-plugin",
         "license": "GPL2",
         "ide_settings": "none",
         "include_processing": False,
@@ -128,6 +131,8 @@ class TestOptInFeatures:
         context_override = {
             "ide_settings": "vscode",
             "linting": "hatch",
+            "git_platform": "gitlab",
+            "git_subgroup": "subgroup",
         }
         return session_copier.copy(dst=plugin_path, **context_override)
 
@@ -136,3 +141,6 @@ class TestOptInFeatures:
 
     def test_ruff_defaults(self, copied_project: CopierProject):
         assert (copied_project.path / "ruff_defaults.toml").exists()
+
+    def test_git_url_has_subgroup(self, copied_project: CopierProject):
+        assert copied_project.context["git_url"] == "https://gitlab.com/org/subgroup/my-qgis-plugin"
